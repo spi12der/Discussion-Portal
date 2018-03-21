@@ -1,9 +1,11 @@
 package com.dao;
 
-import org.hibernate.HibernateException; 
-import org.hibernate.Session; 
-import org.hibernate.Transaction;
+import java.io.Serializable;
+
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
 public class DaoUtils 
@@ -25,14 +27,15 @@ public class DaoUtils
 	
 	public boolean addEntity(Object obj)
 	{
-		SessionFactory factory=getObjFactory();
-		Session session = factory.openSession();
+		boolean f=false;
+		Session session = getObjFactory().openSession();
 		Transaction tx=null;
 		try 
 		{
 			tx = session.beginTransaction();
 			session.save(obj);
 	        tx.commit();
+	        f=true;
 	    }
 		catch (HibernateException e) 
 		{
@@ -43,6 +46,70 @@ public class DaoUtils
 		{
 			session.close(); 
 	    }
-		return false;
+		return f;
+	}
+	
+	public boolean deleteEntity(Object obj)
+	{
+		boolean f=false;
+		Session session = getObjFactory().openSession();
+		Transaction tx=null;
+		try 
+		{
+			tx = session.beginTransaction();
+			session.delete(obj);
+	        tx.commit();
+	        f=true;
+	    }
+		catch (HibernateException e) 
+		{
+			if (tx!=null) tx.rollback();
+	        e.printStackTrace(); 
+	    } 
+		finally 
+		{
+			session.close(); 
+	    }
+		return f;
+	}
+	
+	public boolean updateEntity(Object obj)
+	{
+		boolean f=false;
+		Session session = getObjFactory().openSession();
+		Transaction tx=null;
+		try 
+		{
+			tx = session.beginTransaction();
+			session.update(obj);
+	        tx.commit();
+	        f=true;
+	    }
+		catch (HibernateException e) 
+		{
+			if (tx!=null) tx.rollback();
+	        e.printStackTrace(); 
+	    } 
+		finally 
+		{
+			session.close(); 
+	    }
+		return f;
+	}
+	
+	public <T> T getObjectByID(Class<T> clazz, Serializable key) 
+	{
+		Session session = getObjFactory().openSession();
+		T dbObject;
+		try 
+		{
+			session.beginTransaction();
+			dbObject = clazz.cast(session.get(clazz, key));
+		} 
+		finally 
+		{
+			session.getTransaction().commit();
+		}
+		return dbObject;
 	}
 }

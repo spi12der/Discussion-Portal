@@ -15,7 +15,7 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>  
          
-        <mapping resource="user.hbm.xml" />
+        <mapping class="com.entity.User"></mapping>
  
     </session-factory>
  

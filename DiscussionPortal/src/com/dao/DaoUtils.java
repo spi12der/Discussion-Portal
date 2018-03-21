@@ -6,7 +6,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.AnnotationConfiguration;
 
 public class DaoUtils 
 {
@@ -15,7 +15,7 @@ public class DaoUtils
 		SessionFactory factory=null;
 		try 
 		{
-			factory = new Configuration().configure().buildSessionFactory();
+			factory= new AnnotationConfiguration().configure("hibernate.cfg.xml").buildSessionFactory();
 	    } 
 		catch (Throwable ex) 
 		{ 

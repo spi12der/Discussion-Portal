@@ -5,14 +5,14 @@ import com.entity.User;
 
 public class UserController 
 {
-	public boolean loginUser(User user)
+	public User loginUser(User user)
 	{
 		DaoUtils dao=new DaoUtils();
 		user=dao.getObjectByID(User.class, user.getUsername());//change for username and password
 		if(user!=null && SessionManager.createSession(user.getUsername()))
-			return true;
+			return user;
 		else
-			return false;
+			return null;
 	}
 	
 	public boolean logOutUser(User user)

@@ -34,7 +34,7 @@ public class Course
     @JoinTable(name = "COURSE_POST", 
         joinColumns = { @JoinColumn(name = "POST_ID") }, 
         inverseJoinColumns = { @JoinColumn(name = "COURSE_CODE") })
-    private List<Course> postList = new ArrayList<Course>();
+    private List<Post> postList = new ArrayList<Post>();
 
 	public String getCourseCode() {
 		return courseCode;
@@ -68,11 +68,11 @@ public class Course
 		this.faculties = faculties;
 	}
 
-	public List<Course> getPostList() {
+	public List<Post> getPostList() {
 		return postList;
 	}
 
-	public void setPostList(List<Course> postList) {
+	public void setPostList(List<Post> postList) {
 		this.postList = postList;
 	}
 	

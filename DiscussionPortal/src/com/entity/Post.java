@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -27,7 +28,7 @@ public class Post
 	@OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "POST_POST", 
         joinColumns = { @JoinColumn(name = "POST_ID") }, 
-        inverseJoinColumns = { @JoinColumn(name = "POST_ID") })
+        inverseJoinColumns = { @JoinColumn(name = "REPLY_ID") })
     private List<Post> repliesList = new ArrayList<Post>();
 	
 	@OneToMany(cascade = CascadeType.ALL)
@@ -35,6 +36,9 @@ public class Post
         joinColumns = { @JoinColumn(name = "POST_ID") }, 
         inverseJoinColumns = { @JoinColumn(name = "VOTE_ID") })
     private List<Vote> voteList = new ArrayList<Vote>();
+	
+	@OneToOne(mappedBy="post", cascade = CascadeType.ALL)
+    private User user;
 
 	public long getPostId() {
 		return postId;
@@ -66,6 +70,14 @@ public class Post
 
 	public void setVoteList(List<Vote> voteList) {
 		this.voteList = voteList;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 		
 }

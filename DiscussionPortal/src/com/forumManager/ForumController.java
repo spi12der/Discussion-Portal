@@ -10,6 +10,7 @@ import com.entity.Course;
 import com.entity.Faculty;
 import com.entity.Post;
 import com.entity.Student;
+import com.entity.User;
 import com.entity.Vote;
 
 public class ForumController 
@@ -42,18 +43,57 @@ public class ForumController
 		return makeCourseJSON(student.getCourseList());
 	}
 	
-	public JSONArray getPostList(Course course)
+	@SuppressWarnings("unchecked")
+	public JSONObject getPostObject(Post post,String username)
+	{
+		JSONObject postObject=new JSONObject();
+		postObject.put("postId", post.getPostId());
+		postObject.put("description", post.getDescription());
+		postObject.put("author", post.getUser().getUsername());
+		long upVote=0,downVote=0,userVote=0;
+		for(Vote v:post.getVoteList())
+		{
+			if(v.isVoteType())
+				upVote++;
+			else
+				downVote++;
+			if(v.getUser().getUsername().equalsIgnoreCase(username))
+			{
+				if(v.isVoteType())
+					userVote=1;
+				else
+					userVote=-1;
+			}	
+		}
+		postObject.put("upVote", upVote);
+		postObject.put("downVote", downVote);
+		postObject.put("userVote", userVote);
+		JSONArray replies=new JSONArray();
+		for(Post p:post.getRepliesList())
+			replies.add(getPostObject(p,username));
+		postObject.put("replies", replies);
+		return postObject;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public JSONArray getPostList(String courseCode,String username)
 	{
 		DaoUtils dao=new DaoUtils();
+		Course course=dao.getObjectByID(Course.class, courseCode);
+		JSONArray postArray=new JSONArray();
+		for(Post post:course.getPostList())
+			postArray.add(getPostObject(post,username));
 		return null;
 	}
 	
-	public boolean replyPost(long postID,String reply)
+	public boolean replyPost(long postID,String reply,String username)
 	{
 		DaoUtils dao=new DaoUtils();
 		Post post=dao.getObjectByID(Post.class, postID);
+		User user=dao.getObjectByID(User.class, username);
 		Post replyPost=new Post();
 		replyPost.setDescription(reply);
+		replyPost.setUser(user);
 		post.getRepliesList().add(replyPost);
 		if(dao.updateEntity(post))
 			return true;
@@ -61,12 +101,14 @@ public class ForumController
 			return false;
 	}
 	
-	public boolean votePost(long postID,boolean voteType)
+	public boolean votePost(long postID,boolean voteType,String username)
 	{
 		DaoUtils dao=new DaoUtils();
 		Post post=dao.getObjectByID(Post.class, postID);
+		User user=dao.getObjectByID(User.class, username);
 		Vote vote=new Vote();
 		vote.setVoteType(voteType);
+		vote.setUser(user);
 		post.getVoteList().add(vote);
 		if(dao.updateEntity(post))
 			return true;

@@ -44,8 +44,10 @@ public class ForumController
 	}
 	
 	@SuppressWarnings("unchecked")
-	public JSONObject getPostObject(Post post,String username)
+	public JSONObject getPostObject(long postID,String username)
 	{
+		DaoUtils dao=new DaoUtils();
+		Post post=dao.getObjectByID(Post.class, postID);
 		JSONObject postObject=new JSONObject();
 		postObject.put("postId", post.getPostId());
 		postObject.put("description", post.getDescription());
@@ -70,7 +72,7 @@ public class ForumController
 		postObject.put("userVote", userVote);
 		JSONArray replies=new JSONArray();
 		for(Post p:post.getRepliesList())
-			replies.add(getPostObject(p,username));
+			replies.add(getPostObject(p.getPostId(),username));
 		postObject.put("replies", replies);
 		return postObject;
 	}
@@ -82,8 +84,14 @@ public class ForumController
 		Course course=dao.getObjectByID(Course.class, courseCode);
 		JSONArray postArray=new JSONArray();
 		for(Post post:course.getPostList())
-			postArray.add(getPostObject(post,username));
-		return null;
+		{
+			JSONObject postObject=new JSONObject();
+			postObject.put("postID", post.getPostId());
+			postObject.put("description", post.getDescription());
+			postObject.put("username", post.getUser().getUsername());
+			postArray.add(postObject);
+		}	
+		return postArray;
 	}
 	
 	public boolean replyPost(long postID,String reply,String username)

@@ -10,16 +10,16 @@ import javax.persistence.Table;
 public class User 
 {
 	@Id
-	@Column(name = "username")
+	@Column(name = "USERNAME")
 	private String username;
 	
-	@Column(name = "password")
+	@Column(name = "PASSWORD")
 	private String password;
 	
-	@Column(name = "name")
+	@Column(name = "NAME")
 	private String name;
 	
-	@Column(name = "age")
+	@Column(name = "AGE")
 	private int age;
 	
 	public String getUsername() {

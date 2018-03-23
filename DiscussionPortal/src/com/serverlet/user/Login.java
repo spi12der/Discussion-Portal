@@ -31,8 +31,8 @@ public class Login extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
-		String username=(String) request.getAttribute("username");
-		String password=(String) request.getAttribute("password");
+		String username=(String) request.getParameter("username");
+		String password=(String) request.getParameter("password");
 		User u=new User();
 		u.setUsername(username);
 		u.setPassword(password);

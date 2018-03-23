@@ -14,7 +14,7 @@ import com.entity.User;
 /**
  * Servlet implementation class LoginServlet
  */
-@WebServlet("/Login")
+@WebServlet("/Logout")
 public class Logout extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

@@ -1,8 +1,17 @@
 package com.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 @Entity
@@ -21,6 +30,16 @@ public class User
 	
 	@Column(name = "AGE")
 	private int age;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "USER_VOTE", 
+        joinColumns = { @JoinColumn(name = "USERNAME") }, 
+        inverseJoinColumns = { @JoinColumn(name = "VOTE_ID") })
+    private List<Vote> voteList = new ArrayList<Vote>();
+	
+	@OneToOne
+    @PrimaryKeyJoinColumn
+    private Post post;
 	
 	public String getUsername() {
 		return username;
@@ -45,5 +64,17 @@ public class User
 	}
 	public void setAge(int age) {
 		this.age = age;
+	}
+	public List<Vote> getVoteList() {
+		return voteList;
+	}
+	public void setVoteList(List<Vote> voteList) {
+		this.voteList = voteList;
+	}
+	public Post getPost() {
+		return post;
+	}
+	public void setPost(Post post) {
+		this.post = post;
 	}
 }

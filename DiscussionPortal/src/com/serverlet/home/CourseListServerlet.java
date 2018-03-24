@@ -1,6 +1,7 @@
-package com.serverlet.user;
+package com.serverlet.home;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -8,20 +9,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.UserManangement.UserController;
-import com.entity.User;
+import org.json.simple.JSONArray;
+
+import com.entity.Faculty;
+import com.entity.Student;
+import com.forumManager.ForumController;
 
 /**
- * Servlet implementation class LoginServlet
+ * Servlet implementation class CourseListServerlet
  */
-@WebServlet("/Logout")
-public class Logout extends HttpServlet {
+@WebServlet("/CourseList")
+public class CourseListServerlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Logout() {
+    public CourseListServerlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,19 +36,32 @@ public class Logout extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
 		HttpSession session=request.getSession();
-		User u=new User();
-		u.setUsername((String)session.getAttribute("username"));
-		UserController uc=new UserController();
-		if(uc.logOutUser(u))
-			response.sendRedirect("/DiscussionPortal/JSP/Login.jsp");
+		String username=(String)session.getAttribute("username");
+		String type =(String)session.getAttribute("type");
+		ForumController fc=new ForumController();
+		JSONArray courseList=null;
+		if(type.equalsIgnoreCase("student"))
+		{
+			Student student=new Student();
+			student.setUsername(username);
+			courseList=fc.getCourseList(student);
+		}
 		else
-			response.sendRedirect("/DiscussionPortal/JSP/Home.jsp?message=Unable to logout");
+		{
+			Faculty faculty=new Faculty();
+			faculty.setUsername(username);
+			courseList=fc.getCourseList(faculty);
+		}
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write(courseList.toJSONString());
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

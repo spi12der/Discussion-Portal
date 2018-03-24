@@ -8,8 +8,9 @@ public class UserController
 	public User loginUser(User user)
 	{
 		DaoUtils dao=new DaoUtils();
-		user=dao.getObjectByID(User.class, user.getUsername());//change for username and password
-		if(user!=null && SessionManager.createSession(user.getUsername()))
+		String password=user.getPassword();
+		user=dao.getObjectByID(User.class, user.getUsername());
+		if(user!=null && password.equalsIgnoreCase(user.getPassword()) && SessionManager.createSession(user.getUsername()))
 			return user;
 		else
 			return null;

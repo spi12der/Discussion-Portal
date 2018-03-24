@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.UserManangement.UserController;
+import com.entity.Faculty;
+import com.entity.Student;
 import com.entity.User;
 
 /**
@@ -41,6 +43,10 @@ public class Login extends HttpServlet {
 		{
 			HttpSession session=request.getSession();
 			session.setAttribute("username", username);
+			if(u instanceof Student)
+				session.setAttribute("type", "student");
+			if(u instanceof Faculty)
+				session.setAttribute("type", "faculty");
 			response.sendRedirect("/DiscussionPortal/JSP/Home.jsp");
 		}
 		else

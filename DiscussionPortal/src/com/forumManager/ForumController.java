@@ -1,5 +1,6 @@
 package com.forumManager;
 
+import java.util.Date;
 import java.util.List;
 
 import org.json.simple.JSONArray;
@@ -78,7 +79,7 @@ public class ForumController
 	}
 	
 	@SuppressWarnings("unchecked")
-	public JSONArray getPostList(String courseCode,String username)
+	public JSONArray getPostList(String courseCode)
 	{
 		DaoUtils dao=new DaoUtils();
 		Course course=dao.getObjectByID(Course.class, courseCode);
@@ -89,6 +90,7 @@ public class ForumController
 			postObject.put("postID", post.getPostId());
 			postObject.put("description", post.getDescription());
 			postObject.put("username", post.getUser().getUsername());
+			postObject.put("date", post.getCreationDate());
 			postArray.add(postObject);
 		}	
 		return postArray;
@@ -102,6 +104,7 @@ public class ForumController
 		Post replyPost=new Post();
 		replyPost.setDescription(reply);
 		replyPost.setUser(user);
+		replyPost.setCreationDate(new Date());
 		post.getRepliesList().add(replyPost);
 		if(dao.updateEntity(post))
 			return true;

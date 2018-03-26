@@ -1,6 +1,7 @@
 package com.entity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -24,6 +25,9 @@ public class Post
 	
 	@Column(name = "DESCRIPTION")
 	private String description;
+	
+	@Column(name = "CREATION_DATE")
+	private Date creationDate;
 	
 	@OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "POST_POST", 
@@ -78,6 +82,14 @@ public class Post
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
 	}
 		
 }

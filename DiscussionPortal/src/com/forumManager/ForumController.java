@@ -93,7 +93,7 @@ public class ForumController
 	}
 	
 	@SuppressWarnings("unchecked")
-	public JSONArray getPostList(String courseCode)
+	public JSONArray getPostList(long courseCode)
 	{
 		DaoUtils dao=new DaoUtils();
 		dao.openConnection();
@@ -110,6 +110,22 @@ public class ForumController
 		}	
 		dao.closeConnection();
 		return postArray;
+	}
+	
+	public boolean createPost(long courseCode,String postDescription,String username)
+	{
+		DaoUtils dao=new DaoUtils();
+		Course course=dao.getObjectByID(Course.class, courseCode);
+		User user=dao.getObjectByID(User.class, username);
+		Post post=new Post();
+		post.setDescription(postDescription);
+		post.setUser(user);
+		post.setCreationDate(new Date());
+		course.getPostList().add(post);
+		boolean result=false;
+		if(dao.updateEntity(course))
+			result=true;
+		return result;
 	}
 	
 	public boolean replyPost(long postID,String reply,String username)

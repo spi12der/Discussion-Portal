@@ -6,22 +6,21 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.json.simple.JSONArray;
+import javax.servlet.http.HttpSession;
 
 import com.forumManager.ForumController;
 
 /**
- * Servlet implementation class PostListServerlet
+ * Servlet implementation class ReplyPostServerlet
  */
-@WebServlet("/PostList")
-public class PostListServerlet extends HttpServlet {
+@WebServlet("/ReplyPost")
+public class ReplyPostServerlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public PostListServerlet() {
+    public ReplyPostServerlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,12 +30,12 @@ public class PostListServerlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
-		String courseCode=(String) request.getParameter("courseCode");
+		HttpSession session=request.getSession();
+		String username=(String)session.getAttribute("username");
+		String postId=(String) request.getParameter("postId");
+		String reply=(String) request.getParameter("reply");
 		ForumController fc=new ForumController();
-		JSONArray postList=fc.getPostList(new Long(courseCode));
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(postList.toJSONString());
+		fc.replyPost(new Long(postId), reply, username);
 	}
 
 	/**

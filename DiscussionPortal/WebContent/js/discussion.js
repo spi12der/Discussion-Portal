@@ -116,3 +116,24 @@ function makePostList(data)
 		}
 	}
 }
+
+function createPost()
+{
+	var courseCode=courseList[currentIndex].courseCode;
+	var post=document.getElementById('postBody').value;
+	var xhr = new XMLHttpRequest();
+	var url="/DiscussionPortal/CreatePost?courseCode="+courseCode+"&description="+post;
+    xhr.onreadystatechange = function() 
+    {
+        if (xhr.readyState == 4) 
+        {
+            var data = xhr.responseText;
+            makePostList(data);
+        }
+    }
+    xhr.open('GET', url, true);
+    xhr.send(null);
+    var temp=currentIndex;
+    currentIndex=-1;
+    updatePost(temp);
+}

@@ -8,28 +8,28 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
 
-public class DaoUtils 
+public class DaoUtils
 {
-	public SessionFactory getObjFactory()
+	private Session session;
+	private Transaction tx; 
+	
+	public void openConnection() 
 	{
-		SessionFactory factory=null;
 		try 
 		{
-			factory= new AnnotationConfiguration().configure("hibernate.cfg.xml").buildSessionFactory();
+			SessionFactory factory = new AnnotationConfiguration().configure("hibernate.cfg.xml").buildSessionFactory();
+			session=factory.openSession();
 	    } 
 		catch (Throwable ex) 
 		{ 
 	         System.err.println("Failed to create sessionFactory object." + ex);
 	         throw new ExceptionInInitializerError(ex); 
 	    }
-		return factory;
 	}
 	
 	public boolean addEntity(Object obj)
 	{
 		boolean f=false;
-		Session session = getObjFactory().openSession();
-		Transaction tx=null;
 		try 
 		{
 			tx = session.beginTransaction();
@@ -42,18 +42,12 @@ public class DaoUtils
 			if (tx!=null) tx.rollback();
 	        e.printStackTrace(); 
 	    } 
-		finally 
-		{
-			session.close(); 
-	    }
 		return f;
 	}
 	
 	public boolean deleteEntity(Object obj)
 	{
 		boolean f=false;
-		Session session = getObjFactory().openSession();
-		Transaction tx=null;
 		try 
 		{
 			tx = session.beginTransaction();
@@ -66,18 +60,12 @@ public class DaoUtils
 			if (tx!=null) tx.rollback();
 	        e.printStackTrace(); 
 	    } 
-		finally 
-		{
-			session.close(); 
-	    }
 		return f;
 	}
 	
 	public boolean updateEntity(Object obj)
 	{
 		boolean f=false;
-		Session session = getObjFactory().openSession();
-		Transaction tx=null;
 		try 
 		{
 			tx = session.beginTransaction();
@@ -90,26 +78,28 @@ public class DaoUtils
 			if (tx!=null) tx.rollback();
 	        e.printStackTrace(); 
 	    } 
-		finally 
-		{
-			session.close(); 
-	    }
 		return f;
 	}
 	
 	public <T> T getObjectByID(Class<T> clazz, Serializable key) 
 	{
-		Session session = getObjFactory().openSession();
-		T dbObject;
+		T dbObject=null;
 		try 
 		{
-			session.beginTransaction();
+			tx = session.beginTransaction();
 			dbObject = clazz.cast(session.get(clazz, key));
-		} 
-		finally 
+			tx.commit();
+		}
+		catch (Exception e) 
 		{
-			session.getTransaction().commit();
+			if (tx!=null) tx.rollback();
+	        e.printStackTrace();
 		}
 		return dbObject;
+	}
+	
+	public void closeConnection()
+	{
+		session.close();
 	}
 }

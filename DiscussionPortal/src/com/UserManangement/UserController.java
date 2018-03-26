@@ -8,8 +8,10 @@ public class UserController
 	public User loginUser(User user)
 	{
 		DaoUtils dao=new DaoUtils();
+		dao.openConnection();
 		String password=user.getPassword();
 		user=dao.getObjectByID(User.class, user.getUsername());
+		dao.closeConnection();
 		if(user!=null && password.equalsIgnoreCase(user.getPassword()) && SessionManager.createSession(user.getUsername()))
 			return user;
 		else
@@ -33,9 +35,11 @@ public class UserController
 	public boolean registerUser(User user)
 	{
 		DaoUtils dao=new DaoUtils();
+		dao.openConnection();
+		boolean result=false;
 		if(dao.addEntity(user))
-			return true;
-		else
-			return false;
+			result=true;
+		dao.closeConnection();
+		return result;
 	}
 }

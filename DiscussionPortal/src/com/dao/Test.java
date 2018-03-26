@@ -1,6 +1,5 @@
 package com.dao;
 
-import com.UserManangement.UserController;
 import com.entity.Course;
 import com.entity.Student;
 import com.entity.User;
@@ -33,8 +32,10 @@ public class Test
 		c.setCourseCode("456");
 		c.setCourseName("Software engineering");
 		DaoUtils dao=new DaoUtils();
+		dao.openConnection();
 		Student s=dao.getObjectByID(Student.class, "xyz");
 		s.getCourseList().add(c);
 		dao.updateEntity(s);
+		dao.closeConnection();
 	}
 }

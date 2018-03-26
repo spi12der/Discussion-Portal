@@ -29,15 +29,12 @@ public class Test
 		Student s=obj.getObjectByID(Student.class, "xyz");
 		for(Course c:s.getCourseList())
 			System.out.println(c.getCourseName());*/
-		UserController uc=new UserController();
-		u=uc.loginUser(u);
-		if(u instanceof Student)
-		{
-			System.out.println("Student");
-		}
-		else
-		{
-			System.out.println("Others");
-		}	
+		Course c=new Course();
+		c.setCourseCode("456");
+		c.setCourseName("Software engineering");
+		DaoUtils dao=new DaoUtils();
+		Student s=dao.getObjectByID(Student.class, "xyz");
+		s.getCourseList().add(c);
+		dao.updateEntity(s);
 	}
 }

@@ -47,7 +47,7 @@ public class Login extends HttpServlet {
 				session.setAttribute("type", "student");
 			if(u instanceof Faculty)
 				session.setAttribute("type", "faculty");
-			response.sendRedirect("/DiscussionPortal/JSP/Home.jsp");
+			response.sendRedirect("/DiscussionPortal/home.html");
 		}
 		else
 			response.sendRedirect("/DiscussionPortal/JSP/Login.jsp?message=Invalid Credentials");

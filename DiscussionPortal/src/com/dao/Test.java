@@ -33,15 +33,23 @@ public class Test
 		/*Post p=new Post();
 		Course c=dao.getObjectByID(Course.class, "123");
 		User u=dao.getObjectByID(User.class, "xyz");*/
-		long id=1;
-		Post p=dao.getObjectByID(Post.class, id);
-		/*p.setCreationDate(new Date());
-		p.setDescription("What is RAFT algorithm about ?");*/
-		/*p.setCourse(c);
+		//long id=4;
+		Course c=dao.getObjectByID(Course.class, "123");
+		User u=dao.getObjectByID(User.class, "xyz");
+		Post p=new Post();
+		//p.setCourse(c);
 		p.setUser(u);
-		dao.addEntity(p);*/
-		//dao.updateEntity(p);
-		System.out.println(getFormat(p.getCreationDate()));
+		p.setCreationDate(new Date());
+		p.setDescription("Hello123");
+		dao.addEntity(p);
+		//Post p=dao.getObjectByID(Post.class, id);
+		/*p.setCreationDate(new Date());
+		p.setDescription("What is RAFT algorithm about ?");
+		p.setCourse(c);
+		p.setUser(u);
+		dao.addEntity(p);
+		dao.updateEntity(p);*/
+		//System.out.println(getFormat(p.getCreationDate()));
 		dao.closeConnection();
 	}
 	

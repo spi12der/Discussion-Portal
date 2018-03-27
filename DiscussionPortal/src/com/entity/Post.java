@@ -28,23 +28,22 @@ public class Post
 	@Column(name = "CREATION_DATE")
 	private Date creationDate;
 	
-	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "parentPost")
     private List<Post> repliesList = new ArrayList<Post>();
 	
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Vote> voteList = new ArrayList<Vote>();
 	
-	@ManyToOne(optional = true)
+	@ManyToOne(optional = false)
     @JoinColumn(name = "USERNAME")
 	private User user;
 	
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true)
     @JoinColumn(name = "COURSE_CODE")
 	private Course course;
 
-	
-	@ManyToOne(optional = false)
-    @JoinColumn(name = "POST_ID")
+	@ManyToOne(cascade={CascadeType.ALL}, optional = true)
+    @JoinColumn(name = "REPLY_ID")
 	private Post parentPost;
 	
 	public long getPostId() {

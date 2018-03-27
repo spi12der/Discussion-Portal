@@ -1,6 +1,7 @@
-package com.serverlet.home;
+package com.serverlet.forum;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -8,19 +9,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
+
+import com.entity.Faculty;
+import com.entity.Student;
 import com.forumManager.ForumController;
 
 /**
- * Servlet implementation class ReplyPostServerlet
+ * Servlet implementation class CourseListServerlet
  */
-@WebServlet("/ReplyPost")
-public class ReplyPostServerlet extends HttpServlet {
+@WebServlet("/CourseList")
+public class CourseListServerlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ReplyPostServerlet() {
+    public CourseListServerlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,10 +37,24 @@ public class ReplyPostServerlet extends HttpServlet {
 	{
 		HttpSession session=request.getSession();
 		String username=(String)session.getAttribute("username");
-		String postId=(String) request.getParameter("postId");
-		String reply=(String) request.getParameter("reply");
+		String type =(String)session.getAttribute("type");
 		ForumController fc=new ForumController();
-		fc.replyPost(new Long(postId), reply, username);
+		JSONArray courseList=null;
+		if(type.equalsIgnoreCase("student"))
+		{
+			Student student=new Student();
+			student.setUsername(username);
+			courseList=fc.getCourseList(student);
+		}
+		else
+		{
+			Faculty faculty=new Faculty();
+			faculty.setUsername(username);
+			courseList=fc.getCourseList(faculty);
+		}
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write(courseList.toJSONString());
 	}
 
 	/**

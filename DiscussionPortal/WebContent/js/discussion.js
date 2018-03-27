@@ -52,6 +52,7 @@ function updatePost(index)
 		var courseTitle=document.getElementById('courseTitle');
 		courseTitle.innerHTML=courseList[index].courseName+"<br><br>";
 		$('#postList').empty();
+		$('#postDetails').empty();
 		getPostList(courseList[index].courseCode);
 	}
 }
@@ -92,7 +93,8 @@ function makePostList(data)
 			var hTag=document.createElement('h4');
 			var aTag=document.createElement('a');
 			aTag.innerHTML=postList[i].description;
-			aTag.setAttribute('href',"https://www.iiit.ac.in/");
+			aTag.setAttribute('href',"#");
+			aTag.setAttribute('onClick',"getPostDetails("+postList[i].postID+")");
 			hTag.appendChild(aTag);
 			diTag.appendChild(hTag);
 			var di2Tag=document.createElement('div');

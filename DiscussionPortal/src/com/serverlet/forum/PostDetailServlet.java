@@ -1,6 +1,7 @@
-package com.serverlet.home;
+package com.serverlet.forum;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -8,19 +9,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
+
+import com.entity.Faculty;
+import com.entity.Student;
 import com.forumManager.ForumController;
 
 /**
- * Servlet implementation class VotePostServerlet
+ * Servlet implementation class PostDetailServlet
  */
-@WebServlet("/VotePost")
-public class VotePostServerlet extends HttpServlet {
+@WebServlet("/PostDetail")
+public class PostDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public VotePostServerlet() {
+    public PostDetailServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,13 +37,12 @@ public class VotePostServerlet extends HttpServlet {
 	{
 		HttpSession session=request.getSession();
 		String username=(String)session.getAttribute("username");
-		String postId=(String) request.getParameter("postId");
-		String voteType=(String) request.getParameter("voteType");
-		boolean v=false;
-		if(voteType.charAt(0)=='T')
-			v=true;
+		String post=(String) request.getParameter("post");
 		ForumController fc=new ForumController();
-		fc.votePost(new Long(postId), v, username);
+		JSONObject postDetails=fc.getPostObject(new Long(post), username);
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write(postDetails.toJSONString());
 	}
 
 	/**

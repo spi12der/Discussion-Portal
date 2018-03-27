@@ -85,6 +85,7 @@ public class ForumController
 		postObject.put("upVote", upVote);
 		postObject.put("downVote", downVote);
 		postObject.put("userVote", userVote);
+		postObject.put("date", DateUtils.getFormat(post.getCreationDate()));
 		JSONArray replies=new JSONArray();
 		for(Post p:post.getRepliesList())
 			replies.add(getPostObject(p.getPostId(),username,dao));

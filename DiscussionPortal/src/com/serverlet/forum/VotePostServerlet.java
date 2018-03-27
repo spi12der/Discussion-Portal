@@ -1,7 +1,6 @@
-package com.serverlet.home;
+package com.serverlet.forum;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,16 +11,16 @@ import javax.servlet.http.HttpSession;
 import com.forumManager.ForumController;
 
 /**
- * Servlet implementation class CreatePostServerlet
+ * Servlet implementation class VotePostServerlet
  */
-@WebServlet("/CreatePost")
-public class CreatePostServerlet extends HttpServlet {
+@WebServlet("/VotePost")
+public class VotePostServerlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CreatePostServerlet() {
+    public VotePostServerlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,10 +32,13 @@ public class CreatePostServerlet extends HttpServlet {
 	{
 		HttpSession session=request.getSession();
 		String username=(String)session.getAttribute("username");
-		String courseCode=(String) request.getParameter("courseCode");
-		String postDescription=(String) request.getParameter("description");
+		String postId=(String) request.getParameter("postId");
+		String voteType=(String) request.getParameter("voteType");
+		boolean v=false;
+		if(voteType.charAt(0)=='T')
+			v=true;
 		ForumController fc=new ForumController();
-		fc.createPost(courseCode, postDescription, username);
+		fc.votePost(new Long(postId), v, username);
 	}
 
 	/**

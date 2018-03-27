@@ -1,4 +1,4 @@
-package com.serverlet.home;
+package com.serverlet.forum;
 
 import java.io.IOException;
 import javax.servlet.ServletException;

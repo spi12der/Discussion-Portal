@@ -12,19 +12,24 @@ public class DaoUtils
 {
 	private Session session;
 	private Transaction tx; 
+	private static SessionFactory factory;
 	
-	public void openConnection() 
+	static
 	{
 		try 
 		{
-			SessionFactory factory = new AnnotationConfiguration().configure("hibernate.cfg.xml").buildSessionFactory();
-			session=factory.openSession();
+			factory = new AnnotationConfiguration().configure("hibernate.cfg.xml").buildSessionFactory();
 	    } 
 		catch (Throwable ex) 
 		{ 
 	         System.err.println("Failed to create sessionFactory object." + ex);
 	         throw new ExceptionInInitializerError(ex); 
 	    }
+	}
+	
+	public void openConnection() 
+	{
+		session=factory.openSession();
 	}
 	
 	public boolean addEntity(Object obj)

@@ -1,10 +1,10 @@
 package com.entity;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -19,8 +19,13 @@ public class Vote
 	@Column(name = "VOTE_TYPE")
 	private boolean voteType;
 	
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne(optional = true)
+    @JoinColumn(name = "USERNAME")
 	private User user;
+	
+	@ManyToOne(optional = true)
+    @JoinColumn(name = "POST_ID")
+	private Post post;
 
 	public long getVoteId() {
 		return voteId;

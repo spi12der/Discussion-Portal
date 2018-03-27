@@ -38,7 +38,7 @@ function makeCourses(data)
 			aTag.innerHTML = courseList[i].courseName;
 			c.appendChild(aTag);
 		}
-		makePostList(courseList[0].courseCode);
+		getPostList(courseList[0].courseCode);
 	}
 }
 
@@ -128,12 +128,12 @@ function createPost()
         if (xhr.readyState == 4) 
         {
             var data = xhr.responseText;
-            makePostList(data);
+            var temp=currentIndex;
+            currentIndex=-1;
+            updatePost(temp);
         }
     }
     xhr.open('GET', url, true);
     xhr.send(null);
-    var temp=currentIndex;
-    currentIndex=-1;
-    updatePost(temp);
+    
 }

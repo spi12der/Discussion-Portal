@@ -10,8 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 @Entity
@@ -31,15 +29,11 @@ public class User
 	@Column(name = "AGE")
 	private int age;
 	
-	@OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "USER_VOTE", 
-        joinColumns = { @JoinColumn(name = "USERNAME") }, 
-        inverseJoinColumns = { @JoinColumn(name = "VOTE_ID") })
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Vote> voteList = new ArrayList<Vote>();
 	
-	@OneToOne
-    @PrimaryKeyJoinColumn
-    private Post post;
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Post> postList = new ArrayList<Post>();
 	
 	public String getUsername() {
 		return username;
@@ -71,10 +65,10 @@ public class User
 	public void setVoteList(List<Vote> voteList) {
 		this.voteList = voteList;
 	}
-	public Post getPost() {
-		return post;
+	public List<Post> getPostList() {
+		return postList;
 	}
-	public void setPost(Post post) {
-		this.post = post;
+	public void setPostList(List<Post> postList) {
+		this.postList = postList;
 	}
 }

@@ -10,9 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -29,21 +28,25 @@ public class Post
 	@Column(name = "CREATION_DATE")
 	private Date creationDate;
 	
-	@OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "POST_POST", 
-        joinColumns = { @JoinColumn(name = "POST_ID") }, 
-        inverseJoinColumns = { @JoinColumn(name = "REPLY_ID") })
+	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Post> repliesList = new ArrayList<Post>();
 	
-	@OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "POST_VOTE", 
-        joinColumns = { @JoinColumn(name = "POST_ID") }, 
-        inverseJoinColumns = { @JoinColumn(name = "VOTE_ID") })
+	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Vote> voteList = new ArrayList<Vote>();
 	
-	@OneToOne(mappedBy="post", cascade = CascadeType.ALL)
-    private User user;
+	@ManyToOne(optional = true)
+    @JoinColumn(name = "USERNAME")
+	private User user;
+	
+	@ManyToOne(optional = false)
+    @JoinColumn(name = "COURSE_CODE")
+	private Course course;
 
+	
+	@ManyToOne(optional = false)
+    @JoinColumn(name = "POST_ID")
+	private Post parentPost;
+	
 	public long getPostId() {
 		return postId;
 	}
@@ -76,6 +79,14 @@ public class Post
 		this.voteList = voteList;
 	}
 
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
+
 	public User getUser() {
 		return user;
 	}
@@ -84,12 +95,20 @@ public class Post
 		this.user = user;
 	}
 
-	public Date getCreationDate() {
-		return creationDate;
+	public Course getCourse() {
+		return course;
 	}
 
-	public void setCreationDate(Date creationDate) {
-		this.creationDate = creationDate;
+	public void setCourse(Course course) {
+		this.course = course;
+	}
+
+	public Post getParentPost() {
+		return parentPost;
+	}
+
+	public void setParentPost(Post parentPost) {
+		this.parentPost = parentPost;
 	}
 		
 }

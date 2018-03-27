@@ -36,7 +36,7 @@ public class CreatePostServerlet extends HttpServlet {
 		String courseCode=(String) request.getParameter("courseCode");
 		String postDescription=(String) request.getParameter("description");
 		ForumController fc=new ForumController();
-		fc.createPost(new Long(courseCode), postDescription, username);
+		fc.createPost(courseCode, postDescription, username);
 	}
 
 	/**

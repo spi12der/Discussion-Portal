@@ -33,7 +33,7 @@ public class PostListServerlet extends HttpServlet {
 	{
 		String courseCode=(String) request.getParameter("courseCode");
 		ForumController fc=new ForumController();
-		JSONArray postList=fc.getPostList(new Long(courseCode));
+		JSONArray postList=fc.getPostList(courseCode);
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(postList.toJSONString());

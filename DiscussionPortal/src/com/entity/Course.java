@@ -7,8 +7,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -30,10 +28,7 @@ public class Course
 	@ManyToMany(mappedBy="courseList")
     private List<Faculty> faculties = new ArrayList<Faculty>();
 	
-	@OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "COURSE_POST", 
-        joinColumns = { @JoinColumn(name = "POST_ID") }, 
-        inverseJoinColumns = { @JoinColumn(name = "COURSE_CODE") })
+	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<Post> postList = new ArrayList<Post>();
 
 	public String getCourseCode() {

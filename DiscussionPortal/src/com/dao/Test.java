@@ -3,50 +3,26 @@ package com.dao;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import com.entity.Course;
 import com.entity.Post;
 import com.entity.User;
 
 public class Test 
 {
+	@SuppressWarnings("unchecked")
 	public static void main(String[] args) 
 	{
-		DaoUtils dao=new DaoUtils();
-		dao.openConnection();
-		/*Student s=new Student();
-		s.setUsername("xyz");
-		s.setPassword("123");
-		s.setAge(12);
-		s.setBatch("MTech");
-		s.setName("Rohit Dayama");
-		Course c1=new Course();
-		c1.setCourseCode("123");
-		c1.setCourseName("Distributed Systems");
-		Course c2=new Course();
-		c2.setCourseCode("456");
-		c2.setCourseName("Software Engineering");
-		s.getCourseList().add(c1);
-		s.getCourseList().add(c2);
-		dao.addEntity(s);
-		dao.closeConnection();*/
-		/*Post p=new Post();
-		Course c=dao.getObjectByID(Course.class, "123");
-		User u=dao.getObjectByID(User.class, "xyz");*/
-		long id=1;
-		//Course c=dao.getObjectByID(Course.class, "123");
-		User u=dao.getObjectByID(User.class, "xyz");
-		Post p=dao.getObjectByID(Post.class, id);
-		Post r=new Post();
-		r.setDescription("RAFT is distributed algorithm");
-		r.setCreationDate(new Date());
-		r.setParentPost(p);
-		r.setUser(u);
-		dao.addEntity(r);
-		dao.closeConnection();
-		dao.openConnection();
-		p=dao.getObjectByID(Post.class, id);
-		System.out.println(p.getDescription());
-		dao.closeConnection();
+		JSONObject ob=new JSONObject();
+		ob.put("text", "sdfsd sfsddfsf");
+		ob.put("id", "s123");
+		JSONArray a=new JSONArray();
+		a.add("Excellent");
+		a.add("Poor");
+		ob.put("options", a);
+		System.out.println(ob.toJSONString());
 	}
 	
 	public static String getFormat(Date date)

@@ -109,5 +109,4 @@ public class Post
 	public void setParentPost(Post parentPost) {
 		this.parentPost = parentPost;
 	}
-		
 }

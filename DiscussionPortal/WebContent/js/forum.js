@@ -17,6 +17,7 @@ function getPostDetails(id)
 
 function makePost(data)
 {
+	forumFlag=true;
     var postDetail=JSON.parse(data);
     $("#preloader").fadeIn();
     $("#preloader").delay(600).fadeOut();

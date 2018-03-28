@@ -1,5 +1,6 @@
 var courseList;
 var currentIndex;
+var forumFlag;
 
 function getCourseList()
 {
@@ -44,8 +45,9 @@ function makeCourses(data)
 
 function updatePost(index)
 {
-	if(currentIndex!=index)
+	if(currentIndex!=index || forumFlag)
 	{
+		forumFlag=true;
 		currentIndex=index;
 		$("#preloader").fadeIn();
 		$("#preloader").delay(600).fadeOut();

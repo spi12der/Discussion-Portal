@@ -26,9 +26,24 @@
 		  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 		<![endif]-->
+		
+		<script type="text/javascript">
+		function checkMessage()
+		{
+			<%String s=request.getParameter("message");%>
+			var response='<%
+			if(s!=null)
+				out.print(s);
+			else
+				out.print("");
+			%>';
+			var d=document.getElementById('msg');
+			d.innerHTML=response+"<br><br>";
+		}	
+		</script>
 
     </head>
-	<body>
+	<body onload="checkMessage();">
 
 		<!-- Header -->
 		<header id="header">
@@ -83,14 +98,15 @@
 		<!-- /Hero-area -->
 
 		<!-- Contact -->
-		<div id="contact" class="section">
+		<div id="contact" class="section" style="padding-top:2%;">
 
 			<!-- container -->
 			<div class="container" style="margin-left: 26%">
 
 				<div class="col-md-6">
 					<div class="contact-form">
-						<h4>Login</h4><br><br>
+						<h4>Sign In</h4>
+						<div id="msg" style="color:red;"></div>
 						<form>
 							<input class="input" type="text" name="username" placeholder="Username">
 							<input class="input" type="password" name="password" placeholder="Password">

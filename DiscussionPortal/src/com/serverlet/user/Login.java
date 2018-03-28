@@ -50,7 +50,7 @@ public class Login extends HttpServlet {
 			response.sendRedirect("/DiscussionPortal/home.html");
 		}
 		else
-			response.sendRedirect("/DiscussionPortal/JSP/Login.jsp?message=Invalid Credentials");
+			response.sendRedirect("/DiscussionPortal/login.jsp?message=Invalid Credentials");
 	}
 
 	/**

@@ -1,5 +1,7 @@
 package com.forumManager;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -100,8 +102,16 @@ public class ForumController
 		dao.openConnection();
 		Course course=dao.getObjectByID(Course.class, courseCode);
 		JSONArray postArray=new JSONArray();
-		for(Post post:course.getPostList())
+		List<Post> p=course.getPostList();
+		Collections.sort(p, new Comparator<Post>() 
 		{
+			  public int compare(Post o1, Post o2) {
+			      return o1.getCreationDate().compareTo(o2.getCreationDate());
+			  }
+		});
+		for(int i=p.size()-1;i>=0;i--)
+		{
+			Post post=p.get(i);
 			JSONObject postObject=new JSONObject();
 			postObject.put("postID", post.getPostId());
 			postObject.put("description", post.getDescription());

@@ -36,9 +36,9 @@ public class Logout extends HttpServlet {
 		u.setUsername((String)session.getAttribute("username"));
 		UserController uc=new UserController();
 		if(uc.logOutUser(u))
-			response.sendRedirect("/DiscussionPortal/JSP/Login.jsp");
+			response.sendRedirect("/DiscussionPortal/login.jsp");
 		else
-			response.sendRedirect("/DiscussionPortal/JSP/Home.jsp?message=Unable to logout");
+			response.sendRedirect("/DiscussionPortal/home.html?message=Unable to logout");
 	}
 
 	/**

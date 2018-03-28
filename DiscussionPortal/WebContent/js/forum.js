@@ -1,6 +1,7 @@
 
 function getPostDetails(id)
 {
+	postId=id;
     var url='/DiscussionPortal/PostDetail?post='+id;
 	var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() 
@@ -52,15 +53,41 @@ function getPostDiv(post)
     sTag.innerHTML=post.date;
     d3Tag.appendChild(sTag);
     var aTag=document.createElement("a");
+    aTag.setAttribute('id',post.postId);
     aTag.setAttribute('class','reply');
     aTag.setAttribute('href','#');
+    aTag.setAttribute('onClick','setReplyId(this.id)');
+    aTag.setAttribute('data-toggle','modal');
+    aTag.setAttribute('data-target','#replyModal');
+    aTag.setAttribute('data-backdrop','static');
+    aTag.setAttribute('data-keyboard','false');
     aTag.innerHTML="reply";
     d3Tag.appendChild(aTag);
     d2Tag.appendChild(d3Tag);
     dTag.appendChild(d2Tag);
     for(var i=0;i<post.replies.length;i++)
-    {
-        dTag.appendChild(post.replies[i]);
-    }
+    	dTag.appendChild(getPostDiv(post.replies[i]));
     return dTag;
+}
+
+function setReplyId(id)
+{
+	replyId=id;
+}	
+
+function replyPost()
+{
+	var description=document.getElementById('replyBody').value;
+	var url='/DiscussionPortal/ReplyPost?postId='+replyId+'&reply='+description;
+	var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() 
+    {
+        if (xhr.readyState == 4) 
+        {
+            var data = xhr.responseText;
+            getPostDetails(postId);
+        }
+    }
+    xhr.open('POST', url, true);
+    xhr.send(null);
 }

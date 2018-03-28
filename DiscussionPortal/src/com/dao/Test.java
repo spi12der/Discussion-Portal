@@ -5,7 +5,6 @@ import java.util.Date;
 
 import com.entity.Course;
 import com.entity.Post;
-import com.entity.Student;
 import com.entity.User;
 
 public class Test 
@@ -33,23 +32,20 @@ public class Test
 		/*Post p=new Post();
 		Course c=dao.getObjectByID(Course.class, "123");
 		User u=dao.getObjectByID(User.class, "xyz");*/
-		//long id=4;
-		Course c=dao.getObjectByID(Course.class, "123");
+		long id=1;
+		//Course c=dao.getObjectByID(Course.class, "123");
 		User u=dao.getObjectByID(User.class, "xyz");
-		Post p=new Post();
-		//p.setCourse(c);
-		p.setUser(u);
-		p.setCreationDate(new Date());
-		p.setDescription("Hello123");
-		dao.addEntity(p);
-		//Post p=dao.getObjectByID(Post.class, id);
-		/*p.setCreationDate(new Date());
-		p.setDescription("What is RAFT algorithm about ?");
-		p.setCourse(c);
-		p.setUser(u);
-		dao.addEntity(p);
-		dao.updateEntity(p);*/
-		//System.out.println(getFormat(p.getCreationDate()));
+		Post p=dao.getObjectByID(Post.class, id);
+		Post r=new Post();
+		r.setDescription("RAFT is distributed algorithm");
+		r.setCreationDate(new Date());
+		r.setParentPost(p);
+		r.setUser(u);
+		dao.addEntity(r);
+		dao.closeConnection();
+		dao.openConnection();
+		p=dao.getObjectByID(Post.class, id);
+		System.out.println(p.getDescription());
 		dao.closeConnection();
 	}
 	

@@ -1,6 +1,8 @@
 var courseList;
 var currentIndex;
 var forumFlag;
+var postId;
+var replyId;
 
 function getCourseList()
 {

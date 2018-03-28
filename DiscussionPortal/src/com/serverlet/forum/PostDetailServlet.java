@@ -11,8 +11,6 @@ import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 
-import com.entity.Faculty;
-import com.entity.Student;
 import com.forumManager.ForumController;
 
 /**

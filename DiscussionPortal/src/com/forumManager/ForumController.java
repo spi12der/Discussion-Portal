@@ -66,7 +66,7 @@ public class ForumController
 		JSONObject postObject=new JSONObject();
 		postObject.put("postId", post.getPostId());
 		postObject.put("description", post.getDescription());
-		postObject.put("author", post.getUser().getUsername());
+		postObject.put("author", post.getUser().getName());
 		long upVote=0,downVote=0,userVote=0;
 		for(Vote v:post.getVoteList())
 		{
@@ -105,7 +105,7 @@ public class ForumController
 			JSONObject postObject=new JSONObject();
 			postObject.put("postID", post.getPostId());
 			postObject.put("description", post.getDescription());
-			postObject.put("username", post.getUser().getUsername());
+			postObject.put("username", post.getUser().getName());
 			postObject.put("date", DateUtils.getFormat(post.getCreationDate()));
 			postArray.add(postObject);
 		}	
@@ -141,9 +141,9 @@ public class ForumController
 		replyPost.setDescription(reply);
 		replyPost.setUser(user);
 		replyPost.setCreationDate(new Date());
-		post.getRepliesList().add(replyPost);
+		replyPost.setParentPost(post);
 		boolean result=false;
-		if(dao.updateEntity(post))
+		if(dao.addEntity(replyPost))
 			result=true;
 		dao.closeConnection();
 		return result;

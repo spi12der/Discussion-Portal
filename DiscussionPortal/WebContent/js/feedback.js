@@ -134,17 +134,19 @@ function getRequests(data)
 	var courses=JSON.parse(data).course;	
 	for(var i=0;i<courses.length;i++)
 	{
-		c.appendChild(getCollapseDiv("cola"+i,courses.name));
-		if(courses[i].replies.length==0)
+		c.appendChild(getCollapseDiv("cola"+i,courses[i].name));
+		if(courses[i].request.length==0)
 		{
 			var dTag=document.createElement('div');
 			dTag.setAttribute('class','panel-body');
 			dTag.innerHTML="No feedback request found";
+			var cT=document.getElementById("cola"+i);
+			cT.appendChild(dTag);
 		}
 		else
 		{
-			for(var j=0;j<courses[i].replies.length;j++)
-			addRequest("Feedback Request-"+courses[i].replies[j].number,courses[i].replies[j].date,courses[i].replies[j].status,"cola"+i,courses[i].name,courses[i].replies[j].id);
+			for(var j=0;j<courses[i].request.length;j++)
+			addRequest("Feedback Request-"+courses[i].request[j].number,courses[i].request[j].date,courses[i].request[j].status,"cola"+i,courses[i].name,courses[i].request[j].id);
 		}				
 	}
 }

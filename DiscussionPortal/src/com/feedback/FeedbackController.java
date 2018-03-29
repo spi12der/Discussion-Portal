@@ -1,9 +1,11 @@
 package com.feedback;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import org.json.simple.JSONArray;
@@ -26,33 +28,35 @@ public class FeedbackController
 		DaoUtils dao=new DaoUtils();
 		dao.openConnection();
 		Faculty facutly=dao.getObjectByID(Faculty.class, username);
-		Map<Course,List<FeedbackRequest>> m=new HashMap<Course,List<FeedbackRequest>>();
+		Map<String,List<FeedbackRequest>> m=new HashMap<String,List<FeedbackRequest>>();
 		for(FeedbackRequest fr:facutly.getRequestList())
 		{
 			List<FeedbackRequest> l;
-			if(m.get(fr.getCourse())==null)
-				l=m.get(fr.getCourse());
+			if(m.get(fr.getCourse().getCourseCode())!=null)
+				l=m.get(fr.getCourse().getCourseCode());
 			else
 				l=new ArrayList<FeedbackRequest>();
 			l.add(fr);
-			m.put(fr.getCourse(), l);
+			m.put(fr.getCourse().getCourseCode(), l);
 		}
-		for(Map.Entry<Course,List<FeedbackRequest>> entry : m.entrySet())
+		for(Course c:facutly.getCourseList())
 		{
 			JSONObject courseObject=new JSONObject();
-			Course c=entry.getKey();
 			courseObject.put("code", c.getCourseCode());
 			courseObject.put("name", c.getCourseName());
 			JSONArray requestArr=new JSONArray();
-			for(FeedbackRequest fr:entry.getValue())
+			if(m.containsKey(c.getCourseCode()))
 			{
-				JSONObject frObject=new JSONObject();
-				frObject.put("id", fr.getFeedbackId());
-				frObject.put("number", fr.getFeedbackNumber());
-				frObject.put("date", DateUtils.getFormat(fr.getInitiatedDate()));
-				frObject.put("replies", fr.getResponseList().size());
-				frObject.put("total", c.getStudents().size());
-				requestArr.add(frObject);
+				for(FeedbackRequest fr:m.get(c.getCourseCode()))
+				{
+					JSONObject frObject=new JSONObject();
+					frObject.put("id", fr.getFeedbackId());
+					frObject.put("number", fr.getFeedbackNumber());
+					frObject.put("date", DateUtils.getFormat(fr.getInitiatedDate()));
+					frObject.put("replies", fr.getResponseList().size());
+					frObject.put("total", c.getStudents().size());
+					requestArr.add(frObject);
+				}
 			}
 			courseObject.put("request",requestArr);
 			courseArr.add(courseObject);
@@ -86,6 +90,9 @@ public class FeedbackController
 		DaoUtils dao=new DaoUtils();
 		dao.openConnection();
 		Student student=dao.getObjectByID(Student.class, username);
+		Set<Long> s=new HashSet<Long>();
+		for(FeedbackResponse fres:student.getResponseList())
+			s.add(fres.getFeedbackRequest().getFeedbackId());
 		for(Course c:student.getCourseList())
 		{
 			JSONObject courseObject=new JSONObject();
@@ -98,7 +105,10 @@ public class FeedbackController
 				frObject.put("id", fr.getFeedbackId());
 				frObject.put("number", fr.getFeedbackNumber());
 				frObject.put("date", DateUtils.getFormat(fr.getInitiatedDate()));
-				
+				if(s.contains(fr.getFeedbackId()))
+					frObject.put("status", "green");
+				else
+					frObject.put("status", "red");
 				requestArr.add(frObject);
 			}
 			courseObject.put("request", requestArr);

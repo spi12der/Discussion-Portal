@@ -44,6 +44,7 @@ function addRequest(id,request)
 	bTag.setAttribute('onClick','viewReport('+request.id+')');
 	bTag.innerHTML="View Report";
 	sTag.appendChild(bTag);
+	dTag.appendChild(sTag);
 	var c=document.getElementById(id);
 	c.appendChild(dTag);
 }

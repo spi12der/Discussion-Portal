@@ -3,28 +3,26 @@ package com.dao;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
 import com.entity.Course;
-import com.entity.Post;
-import com.entity.User;
+import com.entity.Faculty;
 
 public class Test 
 {
-	@SuppressWarnings("unchecked")
 	public static void main(String[] args) 
 	{
-		/*JSONObject ob=new JSONObject();
-		ob.put("text", "sdfsd sfsddfsf");
-		ob.put("id", "s123");
-		JSONArray a=new JSONArray();
-		a.add("Excellent");
-		a.add("Poor");
-		ob.put("options", a);
-		System.out.println(ob.toJSONString());*/
 		DaoUtils dao=new DaoUtils();
 		dao.openConnection();
+		Faculty f=new Faculty();
+		f.setAge(18);
+		f.setFacultyCode("123");
+		f.setName("Kishore");
+		f.setUsername("kk");
+		f.setPassword("123");
+		Course c1=dao.getObjectByID(Course.class, "123");
+		Course c2=dao.getObjectByID(Course.class, "456");
+		f.getCourseList().add(c1);
+		f.getCourseList().add(c2);
+		dao.addEntity(f);
 		dao.closeConnection();
 	}
 	

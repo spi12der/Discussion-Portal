@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.JoinColumn;
@@ -25,6 +26,9 @@ public class Faculty extends User
         joinColumns = { @JoinColumn(name = "USERNAME") }, 
         inverseJoinColumns = { @JoinColumn(name = "COURSE_CODE") })
     private List<Course> courseList = new ArrayList<Course>();
+	
+	@OneToMany(mappedBy = "faculty", cascade = CascadeType.ALL)
+    private List<FeedbackRequest> requestList = new ArrayList<FeedbackRequest>();
 
 	public String getFacultyCode() {
 		return facultyCode;
@@ -40,6 +44,14 @@ public class Faculty extends User
 
 	public void setCourseList(List<Course> courseList) {
 		this.courseList = courseList;
+	}
+
+	public List<FeedbackRequest> getRequestList() {
+		return requestList;
+	}
+
+	public void setRequestList(List<FeedbackRequest> requestList) {
+		this.requestList = requestList;
 	}
 	
 }

@@ -30,6 +30,9 @@ public class Course
 	
 	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<Post> postList = new ArrayList<Post>();
+	
+	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    private List<FeedbackRequest> requestList = new ArrayList<FeedbackRequest>();
 
 	public String getCourseCode() {
 		return courseCode;
@@ -70,5 +73,12 @@ public class Course
 	public void setPostList(List<Post> postList) {
 		this.postList = postList;
 	}
-	
+
+	public List<FeedbackRequest> getRequestList() {
+		return requestList;
+	}
+
+	public void setRequestList(List<FeedbackRequest> requestList) {
+		this.requestList = requestList;
+	}
 }

@@ -124,7 +124,7 @@ function addRequest(name,date,type,id)
 	dTag.setAttribute('class','panel-body');
 	var d1Tag=document.createElement('div');
 	var aTag=document.createElement('a');
-	aTag.innerHTML=name+"<br>Initiated on : "+date
+	aTag.innerHTML="<h3 style='margin:0%'>"+name+"</h3><br>Initiated on : "+date
 	var d2Tag=document.createElement('div');
 	d2Tag.setAttribute('class','pull-right');
 	var iTag=document.createElement('img');
@@ -138,6 +138,7 @@ function addRequest(name,date,type,id)
 	else	
 	{
 		aTag.setAttribute("onClick","makeFeedbackPage()");
+		aTag.setAttribute("href","#");
 		iTag.setAttribute('src','./img/red.png');
 		d2Tag.innerHTML="Pending&nbsp;&nbsp;";
 	}	

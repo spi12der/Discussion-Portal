@@ -22,6 +22,8 @@
 		<mapping class="com.entity.Faculty"></mapping>
 		<mapping class="com.entity.Post"></mapping>
 		<mapping class="com.entity.Vote"></mapping>
+		<mapping class="com.entity.FeedbackRequest"></mapping>
+		<mapping class="com.entity.FeedbackResponse"></mapping>
         
  
     </session-factory>

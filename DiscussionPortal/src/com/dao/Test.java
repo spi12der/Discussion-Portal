@@ -15,14 +15,17 @@ public class Test
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) 
 	{
-		JSONObject ob=new JSONObject();
+		/*JSONObject ob=new JSONObject();
 		ob.put("text", "sdfsd sfsddfsf");
 		ob.put("id", "s123");
 		JSONArray a=new JSONArray();
 		a.add("Excellent");
 		a.add("Poor");
 		ob.put("options", a);
-		System.out.println(ob.toJSONString());
+		System.out.println(ob.toJSONString());*/
+		DaoUtils dao=new DaoUtils();
+		dao.openConnection();
+		dao.closeConnection();
 	}
 	
 	public static String getFormat(Date date)

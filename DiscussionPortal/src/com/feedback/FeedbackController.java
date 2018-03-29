@@ -54,6 +54,7 @@ public class FeedbackController
 				frObject.put("total", c.getStudents().size());
 				requestArr.add(frObject);
 			}
+			courseObject.put("request",requestArr);
 			courseArr.add(courseObject);
 		}
 		dao.closeConnection();
@@ -97,17 +98,17 @@ public class FeedbackController
 				frObject.put("id", fr.getFeedbackId());
 				frObject.put("number", fr.getFeedbackNumber());
 				frObject.put("date", DateUtils.getFormat(fr.getInitiatedDate()));
-				frObject.put("replies", fr.getResponseList().size());
-				frObject.put("total", c.getStudents().size());
+				
 				requestArr.add(frObject);
 			}
+			courseObject.put("request", requestArr);
 			courseArr.add(courseObject);
 		}
 		dao.closeConnection();
 		return courseArr;
 	}
 	
-	public boolean submitResposne(long requestId,String responseString,String username)
+	public boolean submitResponse(long requestId,String responseString,String username)
 	{
 		DaoUtils dao=new DaoUtils();
 		dao.openConnection();

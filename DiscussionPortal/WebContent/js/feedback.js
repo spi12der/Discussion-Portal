@@ -1,5 +1,24 @@
-var data='[{"options":["Excellent","Very Good","Good","Fair","Poor"],"text":"Professor speaks clearly and is audible","id":"collapse1"}]';
+var questions='[{"options":["Excellent","Very Good","Good","Fair","Poor"],"text":"Professor speaks clearly and is audible","id":"collapse1"}]';
 var requestId;
+
+function makeUI()
+{
+	var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() 
+    {
+        if (xhr.readyState == 4) 
+        {
+            var data = xhr.responseText;
+            var temp=JSON.parse(data);
+            if(temp.type=="f")
+            	makeFacultyUI(data);
+            else
+            	getRequests(data);	
+        }
+    }
+    xhr.open('POST', '/DiscussionPortal/FeedbackUI', true);
+    xhr.send(null);	
+}
 
 function getCollapseDiv(id,text)
 {
@@ -75,7 +94,7 @@ function makeFeedbackPage(course,name,id)
 	s5Tag.innerHTML="<br><br>";
 	c.appendChild(s5Tag);
 	c.appendChild(bTag);
-	addElement(data);
+	addElement(questions);
 }
 
 function addElement(data)
@@ -105,20 +124,32 @@ function addElement(data)
 	}
 }
 
-function getRequests()
+function getRequests(data)
 {
 	$('#contentArea').empty();
 	var c=document.getElementById('contentArea');
 	var hTag=document.createElement('h2');
-	hTag.innerHTML="Feedback Requests<br><br>";
-	c.appendChild(hTag);	
-	c.appendChild(getCollapseDiv("a1","Distributed Systems"));
-	c.appendChild(getCollapseDiv("a2","Software Engineering"));
-	addRequest("Feedback Request-1","Oct 18, 2017 - 4:00 PM","green","a1");
-	addRequest("Feedback Request-2","Nov 20, 2017 - 8:10 PM","red","a1");
+	hTag.innerHTML="Courses<br><br>";
+	c.appendChild(hTag);
+	var courses=JSON.parse(data).course;	
+	for(var i=0;i<courses.length;i++)
+	{
+		c.appendChild(getCollapseDiv("cola"+i,courses.name));
+		if(courses[i].replies.length==0)
+		{
+			var dTag=document.createElement('div');
+			dTag.setAttribute('class','panel-body');
+			dTag.innerHTML="No feedback request found";
+		}
+		else
+		{
+			for(var j=0;j<courses[i].replies.length;j++)
+			addRequest("Feedback Request-"+courses[i].replies[j].number,courses[i].replies[j].date,courses[i].replies[j].status,"cola"+i,courses[i].name,courses[i].replies[j].id);
+		}				
+	}
 }
 
-function addRequest(name,date,type,id)
+function addRequest(name,date,type,id,course,rid)
 {
 	var dTag=document.createElement('div');
 	dTag.setAttribute('class','panel-body');
@@ -137,7 +168,7 @@ function addRequest(name,date,type,id)
 	}	
 	else	
 	{
-		aTag.setAttribute("onClick","makeFeedbackPage()");
+		aTag.setAttribute("onClick","makeFeedbackPage("+course+","+name+","+rid+")");
 		aTag.setAttribute("href","#");
 		iTag.setAttribute('src','./img/red.png');
 		d2Tag.innerHTML="Pending&nbsp;&nbsp;";

@@ -3,7 +3,9 @@ package com.forumManager;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -52,11 +54,16 @@ public class ForumController
 		return res;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public JSONObject getPostObject(long postID,String username)
 	{
 		DaoUtils dao=new DaoUtils();
 		dao.openConnection();
+		Post p=dao.getObjectByID(Post.class, postID);
+		updateRecentPost(username, postID);
 		JSONObject postObject=getPostObject(postID, username,dao);
+		postObject.put("recent", getRecentPost(username));
+		postObject.put("course", p.getCourse().getCourseName());
 		dao.closeConnection();
 		return postObject;
 	}
@@ -174,6 +181,64 @@ public class ForumController
 			result=true;
 		dao.closeConnection();
 		return result;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public JSONArray getRecentPost(String username)
+	{
+		JSONArray recentArr=new JSONArray();
+		DaoUtils dao=new DaoUtils();
+		dao.openConnection();
+		User u=dao.getObjectByID(User.class, username);
+		String recent=u.getRecentPost();
+		if(!(recent==null || recent.isEmpty()))
+		{
+			String r[]=recent.split(",");
+			for(String id:r)
+			{
+				JSONObject post=new JSONObject();
+				Post p=dao.getObjectByID(Post.class, new Long(id));
+				post.put("postID", p.getPostId());
+				post.put("description", p.getDescription());
+				post.put("author", p.getUser().getName());
+				post.put("date", DateUtils.getFormat(p.getCreationDate()));
+				recentArr.add(post);
+			}
+		}	
+		dao.closeConnection();
+		return recentArr;
+	}
+	
+	public boolean updateRecentPost(String username,long postId)
+	{
+		Set<Long> s=new HashSet<Long>();
+		DaoUtils dao=new DaoUtils();
+		dao.openConnection();
+		String recent="";
+		User u=dao.getObjectByID(User.class, username);
+		recent=String.valueOf(postId)+",";
+		s.add(postId);
+		String re=u.getRecentPost();
+		if(!(re==null || re.isEmpty()))
+		{
+			String r[]=re.split(",");
+			for(String id:r)
+			{
+				Long l=new Long(id);
+				if(s.size()==3)
+					break;
+				else if(!s.contains(l))
+				{
+					recent+=id+",";
+					s.add(l);
+				}	
+			}
+		}
+		recent=recent.substring(0, recent.length()-1);
+		u.setRecentPost(recent);
+		dao.updateEntity(u);
+		dao.closeConnection();
+		return false;
 	}
 	
 }

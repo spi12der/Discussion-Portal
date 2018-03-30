@@ -23,7 +23,9 @@ function makeCourses(data)
 {
 	currentIndex=0;
 	var c=document.getElementById('courseList');
-	courseList=JSON.parse(data);
+	var temp=JSON.parse(data);
+	updateRecentPost(temp.recent);
+	courseList=temp.courseList;
 	var courseTitle=document.getElementById('courseTitle');
 	if(courseList==null || courseList.length==0)
 	{

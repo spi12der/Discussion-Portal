@@ -24,8 +24,11 @@ function makePost(data)
     $("#preloader").delay(600).fadeOut();
     $('#postList').empty();
     $('#postDetails').empty();
+    var title=document.getElementById('courseTitle');
+    title.innerHTML=postDetail.course;
     var c=document.getElementById('postDetails');
     c.appendChild(getPostDiv(postDetail));
+    updateRecentPost(postDetail.recent);
 }
 
 function getPostDiv(post)
@@ -90,4 +93,36 @@ function replyPost()
     }
     xhr.open('POST', url, true);
     xhr.send(null);
+}
+
+function updateRecentPost(post)
+{
+    $('#recentPost').empty();
+    var c=document.getElementById('recentPost');
+    var hTag=document.createElement('h3');
+    hTag.innerHTML="Recent Posts";
+    c.appendChild(hTag);
+    if(post.length==0)
+    {
+        var p1Tag=document.createElement("p");
+        p1Tag.innerHTML="No recent post found";
+        c.appendChild(p1Tag);
+    }
+    else
+    {
+        for(var i=0;i<post.length;i++)
+        {
+            var dTag=document.createElement('div');
+            dTag.setAttribute('class','single-post');
+            var aTag=document.createElement('a');
+            aTag.setAttribute("href","#");
+            aTag.innerHTML=post[i].description;
+            aTag.setAttribute('onClick',"getPostDetails("+post[i].postID+")");
+            var pTag=document.createElement('p');
+            pTag.innerHTML="<small>By : "+post[i].author+" "+post[i].date+"</small>";
+            dTag.appendChild(aTag);
+            dTag.appendChild(pTag);
+            c.appendChild(dTag);
+        }
+    }
 }

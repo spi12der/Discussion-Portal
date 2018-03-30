@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import com.entity.Faculty;
 import com.entity.Student;
@@ -33,6 +34,7 @@ public class CourseListServerlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
 		HttpSession session=request.getSession();
@@ -40,21 +42,26 @@ public class CourseListServerlet extends HttpServlet {
 		String type =(String)session.getAttribute("type");
 		ForumController fc=new ForumController();
 		JSONArray courseList=null;
+		JSONObject course=new JSONObject();
 		if(type.equalsIgnoreCase("student"))
 		{
 			Student student=new Student();
 			student.setUsername(username);
 			courseList=fc.getCourseList(student);
+			course.put("recent", fc.getRecentPost(username));
+			course.put("courseList", courseList);
 		}
 		else
 		{
 			Faculty faculty=new Faculty();
 			faculty.setUsername(username);
 			courseList=fc.getCourseList(faculty);
+			course.put("recent", fc.getRecentPost(username));
+			course.put("courseList", courseList);
 		}
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(courseList.toJSONString());
+		response.getWriter().write(course.toJSONString());
 	}
 
 	/**

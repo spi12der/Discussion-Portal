@@ -27,6 +27,15 @@ public class User
 	@Column(name = "AGE")
 	private int age;
 	
+	@Column(name = "RECENT")
+	private String recentPost;
+	
+	public String getRecentPost() {
+		return recentPost;
+	}
+	public void setRecentPost(String recentPost) {
+		this.recentPost = recentPost;
+	}
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Vote> voteList = new ArrayList<Vote>();
 	

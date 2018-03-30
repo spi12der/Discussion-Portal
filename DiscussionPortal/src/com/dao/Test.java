@@ -1,15 +1,5 @@
 package com.dao;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import com.entity.Course;
-import com.entity.Faculty;
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
-
 public class Test 
 {
 	/*public static void main(String[] args) 
@@ -48,22 +38,4 @@ public class Test
 		}
 		return time;
 	}*/
-	
-	public static void main(String[] args) 
-	{
-		try {
-			HttpResponse<JsonNode> response = Unirest.post("https://textanalysis-text-summarization.p.mashape.com/text-summarizer-text")
-					.header("X-Mashape-Key", "ReKEOisfkVmsh15P1mf7dOCpce5ip1mgVI9jsnVuBiGUtppMZf")
-					.header("Content-Type", "application/json")
-					.header("Accept", "application/json")
-					.field("sentnum", 5)
-					.field("text", "Automatic summarization is the process of reducing a text document with a computer program in order to create a summary that retains the most important points of the original document. As the problem of information overload has grown, and as the quantity of data has increased, so has interest in automatic summarization. Technologies that can make a coherent summary take into account variables such as length, writing style and syntax. An example of the use of summarization technology is search engines such as Google. Document summarization is another.")
-					.asJson();
-			response.getBody();
-		} 
-		catch (UnirestException e) 
-		{
-			e.printStackTrace();
-		}
-	}
 }

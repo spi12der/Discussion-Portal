@@ -23,4 +23,19 @@ public class DateUtils
 		}
 		return time;
 	}
+	
+	public static String getDFormat(Date date)
+	{
+		String time="";
+		try
+		{
+			SimpleDateFormat day = new SimpleDateFormat("MMM dd, yyyy");
+	        time=day.format(date);
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		return time;
+	}
 }

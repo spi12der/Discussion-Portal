@@ -119,7 +119,7 @@ function updateRecentPost(post)
             aTag.innerHTML=post[i].description;
             aTag.setAttribute('onClick',"getPostDetails("+post[i].postID+")");
             var pTag=document.createElement('p');
-            pTag.innerHTML="<small>By : "+post[i].author+" "+post[i].date+"</small>";
+            pTag.innerHTML="<small>By : "+post[i].author+" - "+post[i].date+"</small>";
             dTag.appendChild(aTag);
             dTag.appendChild(pTag);
             c.appendChild(dTag);

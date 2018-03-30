@@ -201,7 +201,7 @@ public class ForumController
 				post.put("postID", p.getPostId());
 				post.put("description", p.getDescription());
 				post.put("author", p.getUser().getName());
-				post.put("date", DateUtils.getFormat(p.getCreationDate()));
+				post.put("date", DateUtils.getDFormat(p.getCreationDate()));
 				recentArr.add(post);
 			}
 		}	

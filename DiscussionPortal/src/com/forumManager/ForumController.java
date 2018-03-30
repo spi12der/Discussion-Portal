@@ -175,9 +175,9 @@ public class ForumController
 		Vote vote=new Vote();
 		vote.setVoteType(voteType);
 		vote.setUser(user);
-		post.getVoteList().add(vote);
+		vote.setPost(post);
 		boolean result=true;
-		if(dao.updateEntity(post))
+		if(dao.addEntity(vote))
 			result=true;
 		dao.closeConnection();
 		return result;

@@ -1,9 +1,9 @@
 
 function getPostDetails(id)
 {
-	postId=id;
+    postId=id;
     var url='/DiscussionPortal/PostDetail?post='+id;
-	var xhr = new XMLHttpRequest();
+    var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() 
     {
         if (xhr.readyState == 4) 
@@ -18,7 +18,7 @@ function getPostDetails(id)
 
 function makePost(data)
 {
-	forumFlag=true;
+    forumFlag=true;
     var postDetail=JSON.parse(data);
     $("#preloader").fadeIn();
     $("#preloader").delay(600).fadeOut();
@@ -65,24 +65,39 @@ function getPostDiv(post)
     aTag.setAttribute('data-backdrop','static');
     aTag.setAttribute('data-keyboard','false');
     aTag.innerHTML="reply";
+    if(post.userVote==1)
+    {
+        d3Tag.appendChild(getUpSSpan(post.postId,post.upVote,"./img/selected.png"));
+        d3Tag.appendChild(getDownSSpan(post.postId,post.downVote,"./img/down.png"));
+    }    
+    else if(post.userVote==-1)
+    {
+        d3Tag.appendChild(getUpSSpan(post.postId,post.upVote,"./img/up.png"));
+        d3Tag.appendChild(getDownSSpan(post.postId,post.downVote,"./img/unselect.png"));    
+    }  
+    else
+    {
+        d3Tag.appendChild(getUpSpan(post.postId,post.upVote,"./img/up.png"));
+        d3Tag.appendChild(getDownSpan(post.postId,post.downVote,"./img/down.png"));
+    }  
     d3Tag.appendChild(aTag);
     d2Tag.appendChild(d3Tag);
     dTag.appendChild(d2Tag);
     for(var i=0;i<post.replies.length;i++)
-    	dTag.appendChild(getPostDiv(post.replies[i]));
+        dTag.appendChild(getPostDiv(post.replies[i]));
     return dTag;
 }
 
 function setReplyId(id)
 {
-	replyId=id;
-}	
+    replyId=id;
+}   
 
 function replyPost()
 {
-	var description=document.getElementById('replyBody').value;
-	var url='/DiscussionPortal/ReplyPost?postId='+replyId+'&reply='+description;
-	var xhr = new XMLHttpRequest();
+    var description=document.getElementById('replyBody').value;
+    var url='/DiscussionPortal/ReplyPost?postId='+replyId+'&reply='+description;
+    var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() 
     {
         if (xhr.readyState == 4) 
@@ -126,3 +141,91 @@ function updateRecentPost(post)
         }
     }
 }
+
+function setUpVote(id,uct,dct)
+{
+    $('#upV'+id).empty();
+    var c=document.getElementById('upV'+id);
+    c.innerHTML='<a class="reply"><img src="./img/selected.png" height="25px" width="25px"></a><span id="upCt'+id+'">&nbsp;&nbsp;'+uct+'</span>';
+    $('#downV'+id).empty();
+    c=document.getElementById('downV'+id);
+    c.innerHTML='<a class="reply"><img src="./img/down.png" height="27px" width="27px"></a><span id="downCt'+id+'">&nbsp;&nbsp;'+dct+'</span>';
+}
+
+function setDownVote(id,uct,dct)
+{
+    $('#upV'+id).empty();
+    var c=document.getElementById('upV'+id);
+    c.innerHTML='<a class="reply"><img src="./img/up.png" height="25px" width="25px"></a><span id="upCt'+id+'">&nbsp;&nbsp;'+uct+'</span>';
+    $('#downV'+id).empty();
+    c=document.getElementById('downV'+id);
+    c.innerHTML='<a class="reply"><img src="./img/unselect.png" height="27px" width="27px"></a><span id="downCt'+id+'">&nbsp;&nbsp;'+dct+'</span>';
+}
+
+function getUpSpan(id,ct,img)
+{
+    var sTag=document.createElement('span');
+    sTag.setAttribute('id','upV'+id);
+    sTag.innerHTML='<a class="reply"><img src="'+img+'" onClick="upVote('+id+')" height="25px" width="25px"></a><span id="upCt'+id+'">&nbsp;&nbsp;'+ct+'</span>';
+    return sTag;
+}
+
+function getDownSpan(id,ct,img)
+{
+    var sTag=document.createElement('span');
+    sTag.setAttribute('id','downV'+id);
+    sTag.innerHTML='<a class="reply"><img src="'+img+'" onClick="downVote('+id+')" height="25px" width="25px"></a><span id="downCt'+id+'">&nbsp;&nbsp;'+ct+'</span>';
+    return sTag;
+}
+
+function getUpSSpan(id,ct,img)
+{
+    var sTag=document.createElement('span');
+    sTag.setAttribute('id','upV'+id);
+    sTag.innerHTML='<a class="reply"><img src="'+img+'" height="25px" width="25px"></a><span id="upCt'+id+'">&nbsp;&nbsp;'+ct+'</span>';
+    return sTag;
+}
+
+function getDownSSpan(id,ct,img)
+{
+    var sTag=document.createElement('span');
+    sTag.setAttribute('id','downV'+id);
+    sTag.innerHTML='<a class="reply"><img src="'+img+'" height="25px" width="25px"></a><span id="downCt'+id+'">&nbsp;&nbsp;'+ct+'</span>';
+    return sTag;
+}
+
+function upVote(id)
+{
+    var k1=document.getElementById('upCt'+id).innerHTML;
+    var uct=(parseInt(k1.substring(12))+1);
+    var k2=document.getElementById('downCt'+id).innerHTML;
+    var dct=(parseInt(k2.substring(12)));
+    setUpVote(id,uct,dct);
+    updateVote(id,"T");
+}
+
+function downVote(id)
+{
+    var k1=document.getElementById('upCt'+id).innerHTML;
+    var uct=(parseInt(k1.substring(12)));
+    var k2=document.getElementById('downCt'+id).innerHTML;
+    var dct=(parseInt(k2.substring(12))+1);
+    setDownVote(id,uct,dct);
+    updateVote(id,"F");
+}
+
+function updateVote(id,voteType)
+{
+    var url='/DiscussionPortal/VotePost?postId='+id+'&voteType='+voteType;
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() 
+    {
+        if (xhr.readyState == 4) 
+        {
+            var data = xhr.responseText;
+        }
+    }
+    xhr.open('POST', url, true);
+    xhr.send(null);
+}
+

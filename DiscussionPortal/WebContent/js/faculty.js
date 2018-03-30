@@ -22,11 +22,11 @@ function makeFacultyUI(data)
 		var k=document.getElementById("cola"+i);
 		k.appendChild(d1Tag);
 		for(var j=0;j<ui[i].request.length;j++)
-			addRequest("cola"+i,ui[i].request[j]);
+			addFRequest("cola"+i,ui[i].request[j]);
 	}
 }
 
-function addRequest(id,request)
+function addFRequest(id,request)
 {
 	var dTag=document.createElement('div');
 	dTag.setAttribute('class','panel-body');

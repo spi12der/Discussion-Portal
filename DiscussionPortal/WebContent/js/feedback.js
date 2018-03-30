@@ -170,7 +170,7 @@ function addRequest(name,date,type,id,course,rid)
 	}	
 	else	
 	{
-		aTag.setAttribute("onClick","makeFeedbackPage("+course+","+name+","+rid+")");
+		aTag.setAttribute("onClick","makeFeedbackPage('"+course+"','"+name+"',"+rid+")");
 		aTag.setAttribute("href","#");
 		iTag.setAttribute('src','./img/red.png');
 		d2Tag.innerHTML="Pending&nbsp;&nbsp;";

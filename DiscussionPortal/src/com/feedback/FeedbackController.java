@@ -142,10 +142,19 @@ public class FeedbackController
 		DaoUtils dao=new DaoUtils();
 		dao.openConnection();
 		FeedbackRequest fr=dao.getObjectByID(FeedbackRequest.class, requestId);
+		int resD[]=new int[27];
 		for(FeedbackResponse fres:fr.getResponseList())
 		{
-			System.out.println(fres.getResponse());
+			String res[]=fres.getResponse().split("##");
+			for(int i=0;i<27;i++)
+			{
+				Integer d=new Integer(res[i]);
+				resD[i]+=d;
+			}
 		}
+		Integer tot=fr.getResponseList().size();
+		for(int i=0;i<27;i++)
+			resD[i]/=tot;
 		dao.closeConnection();
 		return responseObject;
 	}

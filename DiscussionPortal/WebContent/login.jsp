@@ -108,8 +108,8 @@
 						<h4>Sign In</h4>
 						<div id="msg" style="color:red;"></div>
 						<form>
-							<input class="input" type="text" name="username" placeholder="Username">
-							<input class="input" type="password" name="password" placeholder="Password">
+							<input class="input" type="text" name="username" placeholder="Username" required>
+							<input class="input" type="password" name="password" placeholder="Password" required>
 							<button formaction="/DiscussionPortal/Login" class="main-button icon-button pull-right">Login</button>
 						</form>
 					</div>

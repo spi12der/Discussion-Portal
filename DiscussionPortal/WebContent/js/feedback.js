@@ -51,6 +51,7 @@ function getTextArea(id)
 	tTag.setAttribute('placeholder','Write your text here..');
 	tTag.setAttribute('rows','4');
 	tTag.setAttribute('style','height:auto;');
+	tTag.setAttribute('id','r'+id);
 	return tTag;
 }
 
@@ -74,21 +75,22 @@ function makeFeedbackPage(course,name,id)
 	var s1Tag=document.createElement('span');
 	s1Tag.innerHTML="<br><a>Suggestions/Comments to professor</a><br><br>";
 	c.appendChild(s1Tag);
-	c.appendChild(getTextArea(1));
+	c.appendChild(getTextArea(30));
 	var s2Tag=document.createElement('span');
 	s2Tag.innerHTML="<br><br><a>Suggestions/Comments on syllabus</a><br><br>";
 	c.appendChild(s2Tag);
-	c.appendChild(getTextArea(1));
+	c.appendChild(getTextArea(31));
 	var s3Tag=document.createElement('span');
 	s3Tag.innerHTML="<br><br><a>Suggestions/Comments on materials provided during course</a><br><br>";
 	c.appendChild(s3Tag);
-	c.appendChild(getTextArea(1));
+	c.appendChild(getTextArea(32));
 	var s4Tag=document.createElement('span');
 	s4Tag.innerHTML="<br><br><a>Any other Suggestions/Comments</a><br><br>";
 	c.appendChild(s4Tag);
-	c.appendChild(getTextArea(1));
+	c.appendChild(getTextArea(33));
 	var bTag=document.createElement('button');
 	bTag.setAttribute('class','main-button icon-button');
+	bTag.setAttribute('onClick','submitFeedback()');
 	bTag.innerHTML="Submit Feedback";
 	var s5Tag=document.createElement('span');
 	s5Tag.innerHTML="<br><br>";
@@ -112,7 +114,7 @@ function addElement(data)
 			var iTag=document.createElement('input');
 			iTag.setAttribute('type','radio');
 			iTag.setAttribute('name','r'+i);
-			iTag.setAttribute('value',elementList[i].options[j]);
+			iTag.setAttribute('value',j+1);
 			var sTag=document.createElement('span');
 			sTag.innerHTML="&nbsp;&nbsp;"+elementList[i].options[j]+"&nbsp;&nbsp;";
 			d1Tag.appendChild(iTag);
@@ -181,4 +183,55 @@ function addRequest(name,date,type,id,course,rid)
 	dTag.appendChild(d2Tag);
 	var c=document.getElementById(id);
 	c.appendChild(dTag);
+}
+
+function validateFeedback()
+{
+	var f=1;
+	for(var i=0;i<27;i++)
+	{
+		var k=document.querySelector('input[name="r'+i+'"]:checked');
+		if(k==null)
+		{
+			f=0;
+			break;
+		}
+	}
+	return f;
+}
+
+function submitFeedback()
+{
+	if(validateFeedback()==0)
+	{
+		alert("Feedback incomplete");
+	}
+	else
+	{
+		var res='';
+		for(var i=0;i<27;i++)
+		{
+			var k=document.querySelector('input[name="r'+i+'"]:checked').value;
+			res+=k+"##";
+		}
+		for(var i=30;i<34;i++)
+		{
+			var k=document.getElementById('r'+i).value;
+			res+=k+"##";	
+		}
+		res=res.slice(0, -2);
+		var xhr = new XMLHttpRequest();
+		var url = '/DiscussionPortal/FeedbackResponse?requestId='+requestId+'&response='+res;
+	    xhr.onreadystatechange = function() 
+	    {
+	        if (xhr.readyState == 4) 
+	        {
+	            var data = xhr.responseText;
+	            alert("Feedback Submitted Successfully");
+	            makeUI();
+	        }
+	    }
+	    xhr.open('POST', url, true);
+	    xhr.send(null);
+	}
 }

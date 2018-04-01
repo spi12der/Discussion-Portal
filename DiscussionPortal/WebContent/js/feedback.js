@@ -114,7 +114,7 @@ function addElement(data)
 			var iTag=document.createElement('input');
 			iTag.setAttribute('type','radio');
 			iTag.setAttribute('name','r'+i);
-			iTag.setAttribute('value',j+1);
+			iTag.setAttribute('value',elementList[i].options.length-j);
 			var sTag=document.createElement('span');
 			sTag.innerHTML="&nbsp;&nbsp;"+elementList[i].options[j]+"&nbsp;&nbsp;";
 			d1Tag.appendChild(iTag);
@@ -209,19 +209,21 @@ function submitFeedback()
 	else
 	{
 		var res='';
+		var c=0;
 		for(var i=0;i<27;i++)
 		{
 			var k=document.querySelector('input[name="r'+i+'"]:checked').value;
-			res+=k+"##";
+			res+="&"+c+"="+k;
+			c++;
 		}
 		for(var i=30;i<34;i++)
 		{
 			var k=document.getElementById('r'+i).value;
-			res+=k+"##";	
+			res+="&"+c+"="+k;
+			c++;	
 		}
-		res=res.slice(0, -2);
 		var xhr = new XMLHttpRequest();
-		var url = '/DiscussionPortal/FeedbackResponse?requestId='+requestId+'&response='+res;
+		var url = '/DiscussionPortal/FeedbackResponse?requestId='+requestId+res;
 	    xhr.onreadystatechange = function() 
 	    {
 	        if (xhr.readyState == 4) 

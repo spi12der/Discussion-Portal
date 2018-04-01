@@ -41,7 +41,7 @@ function addFRequest(id,request)
 	sTag.appendChild(s1Tag);
 	var bTag=document.createElement('button');
 	bTag.setAttribute('class','main-button icon-button');
-	bTag.setAttribute('onClick','viewReport('+request.id+')');
+	bTag.setAttribute('onClick','getReportData('+request.id+')');
 	bTag.innerHTML="View Report";
 	sTag.appendChild(bTag);
 	dTag.appendChild(sTag);

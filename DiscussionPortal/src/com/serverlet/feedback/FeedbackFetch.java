@@ -7,21 +7,22 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
+import org.json.simple.JSONObject;
 
 import com.feedback.FeedbackController;
 
 /**
- * Servlet implementation class FeedbackResponseServlet
+ * Servlet implementation class FeedbackFetch
  */
-@WebServlet("/FeedbackResponse")
-public class FeedbackResponseServlet extends HttpServlet {
+@WebServlet("/FeedbackFetch")
+public class FeedbackFetch extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public FeedbackResponseServlet() {
+    public FeedbackFetch() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,14 +32,12 @@ public class FeedbackResponseServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
-		HttpSession session=request.getSession();
-		String username=(String)session.getAttribute("username");
 		String requestId=(String) request.getParameter("requestId");
-		String responseString=new String();
-		for(int i=0;i<31;i++)
-			responseString+=(((String) request.getParameter(i+""))+"##");
 		FeedbackController fc=new FeedbackController();
-		fc.submitResponse(new Long(requestId), responseString, username);
+		JSONObject res=fc.getResponses(new Long(requestId));
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write(res.toJSONString());
 	}
 
 	/**

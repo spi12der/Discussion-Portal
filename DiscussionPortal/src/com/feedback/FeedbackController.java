@@ -136,6 +136,7 @@ public class FeedbackController
 		return res;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public JSONObject getResponses(long requestId)
 	{
 		JSONObject responseObject=new JSONObject();
@@ -143,6 +144,8 @@ public class FeedbackController
 		dao.openConnection();
 		FeedbackRequest fr=dao.getObjectByID(FeedbackRequest.class, requestId);
 		int resD[]=new int[27];
+		int prof[]=new int[5];
+		int crat[]=new int[5];
 		for(FeedbackResponse fres:fr.getResponseList())
 		{
 			String res[]=fres.getResponse().split("##");
@@ -150,11 +153,40 @@ public class FeedbackController
 			{
 				Integer d=new Integer(res[i]);
 				resD[i]+=d;
+				if(i==10)
+					prof[d-1]++;
+				else if(i==24)
+					crat[d-1]++;
 			}
 		}
 		Integer tot=fr.getResponseList().size();
+		JSONArray areas=new JSONArray();
 		for(int i=0;i<27;i++)
+		{
 			resD[i]/=tot;
+			if(resD[i]<2)
+				areas.add(i);
+		}	
+		int category[][]={{0,4},{1,2,3,5,6,26,7},{8,9},{13,25},{12,14,15},{19,20},{16,17,18},{21,22,23},{11}};
+		JSONArray categoryRating=new JSONArray();
+		for(int i=0;i<category.length;i++)
+		{
+			int sum=0;
+			for(int j=0;j<category[i].length;j++)
+				sum+=resD[category[i][j]];
+			categoryRating.add(sum/category[i].length);
+		}
+		JSONArray profRating=new JSONArray();
+		JSONArray courseRating=new JSONArray();
+		for(int i=0;i<5;i++)
+		{
+			profRating.add(prof[i]);
+			courseRating.add(crat[i]);
+		}
+		responseObject.put("category", categoryRating);
+		responseObject.put("prof", profRating);
+		responseObject.put("course", courseRating);
+		responseObject.put("areas", areas);
 		dao.closeConnection();
 		return responseObject;
 	}

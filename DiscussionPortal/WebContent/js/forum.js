@@ -104,6 +104,7 @@ function replyPost()
         {
             var data = xhr.responseText;
             getPostDetails(postId);
+            document.getElementById('replyBody').value="";
         }
     }
     xhr.open('POST', url, true);

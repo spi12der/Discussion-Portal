@@ -10,6 +10,7 @@ function makeUI()
         {
             var data = xhr.responseText;
             var temp=JSON.parse(data);
+            document.getElementById('nameTitle').innnerHTML=temp.name;
             if(temp.type=="f")
             	makeFacultyUI(data);
             else

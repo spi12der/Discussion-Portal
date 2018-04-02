@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.json.simple.JSONObject;
 
 import com.feedback.FeedbackController;
+import com.forumManager.ForumController;
 
 /**
  * Servlet implementation class FeedbackUIServerlet
@@ -38,16 +39,19 @@ public class FeedbackUIServerlet extends HttpServlet {
 		String username=(String)session.getAttribute("username");
 		String type=(String)session.getAttribute("type");
 		FeedbackController fc=new FeedbackController();
+		ForumController fco=new ForumController();
 		JSONObject res=new JSONObject();
 		if(type.charAt(0)=='f')
 		{
 			res.put("type", "f");
 			res.put("course", fc.getCourseFeedbackJSON(username));
+			res.put("name", fco.getName(username));
 		}
 		else
 		{
 			res.put("type", "s");
 			res.put("course", fc.getRequestJSON(username));
+			res.put("name", fco.getName(username));
 		}
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");

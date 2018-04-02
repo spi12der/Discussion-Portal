@@ -28,6 +28,7 @@
 		<![endif]-->
 		
 		<script type="text/javascript">
+		
 		function checkMessage()
 		{
 			<%String s=request.getParameter("message");%>
@@ -39,7 +40,25 @@
 			%>';
 			var d=document.getElementById('msg');
 			d.innerHTML=response+"<br><br>";
+			checkSession();
 		}	
+		
+		function checkSession()
+		{
+			var url='/DiscussionPortal/CheckSession';
+		    var xhr = new XMLHttpRequest();
+		    xhr.onreadystatechange = function() 
+		    {
+		        if (xhr.readyState == 4) 
+		        {
+		            var data = xhr.responseText;
+		            if(data=='y')
+		            	window.location = "home.html";
+		        }
+		    }
+		    xhr.open('POST', url, true);
+		    xhr.send(null);	
+		}
 		</script>
 
     </head>

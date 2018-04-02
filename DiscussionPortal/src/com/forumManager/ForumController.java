@@ -241,4 +241,15 @@ public class ForumController
 		return false;
 	}
 	
+	public String getName(String username)
+	{
+		String name=null;
+		DaoUtils dao=new DaoUtils();
+		dao.openConnection();
+		User u=dao.getObjectByID(User.class, username);
+		name=u.getName();
+		dao.closeConnection();
+		return name;
+	}
+	
 }

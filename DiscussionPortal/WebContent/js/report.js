@@ -36,7 +36,7 @@ function makeReport(data)
   dTag=document.createElement('div');
   dTag.innerHTML='<table><tr><td><div id="chart_span1" style="width: 500px;height: 500px;"></div></td><td><div id="chart_span2" style="width: 500px;height: 500px;"></div></td></tr></table>';
   c.appendChild(dTag);
-  if(content.areas.length!=0)
+  /*if(content.areas.length!=0)
   {
     hTag=document.createElement('h4');
     hTag.innerHTML="Areas of Improvements<br>";
@@ -49,7 +49,7 @@ function makeReport(data)
     }
     dTag.innerHTML=astr;
     c.appendChild(dTag);
-  }
+  }*/
   makeGraph(content);
 }
 
